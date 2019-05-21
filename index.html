@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors Game</title>
+</head>
+
+<body>
+
+  <div id="game">
+      <h1>Rock Paper Scissors Game</h1>
+      <h2>Wins: <span id="wins">0</span></h2>
+      <h2>Losses: <span id="losses">0</span></h2>
+      <h2>Ties: <span id="ties">0</span></h2>
+      <h2>User Choice: <span id="userPlay">TBD</span> </h2>
+      <h2>Computer Choice: <span id="computerPlay">TBD</span></h2>
+      <br>
+      <p><strong>RULES:</strong> Press <strong>"p"</strong> for Paper, <strong>"r"</strong> for Rock, and <strong>"s"</strong> for Scissors</p>
+  </div>
+
+  <script type="text/javascript">
+
+    // Array listing all of the options (Rock, Paper, or Scissors).
+    var play = ["r", "p", "s"];
+    var wins = 0;
+    var losses = 0;
+    var ties = 0;
+    
+
+    var $wins = document.getElementById("wins");
+    var $losses = document.getElementById("losses");
+    var $ties = document.getElementById("ties");
+    var $computerPlay = document.getElementById("computerPlay");
+    var $userPlay = document.getElementById("userPlay");
+
+    // Event acknowledgement
+    document.onkeyup = function(event) {
+      // console.log(event);
+      var userRps;
+      var cpuRps;
+      // Game qualifier to start game
+      if(event.key === "r" || event.key === "p" || event.key === "s") {
+
+        // User initiation
+        var userPlay = event.key;
+        if(userPlay === 'r') {
+          userRps = 'Rock';
+        } else if(userPlay === 'p') {
+          userRps = 'Paper';
+        } else if(userPlay === 's') {
+          userRps = 'Scissors';
+        }
+        // Computer play begins, selecting element from array
+        // formula below is for random select of play array
+        var computerPlay = play[Math.floor(Math.random() * play.length)];
+        // console.log(computerPlay);
+        if(computerPlay === 'r') {
+          cpuRps = 'Rock';
+        } else if(computerPlay === 'p') {
+          cpuRps = 'Paper';
+        } else if(computerPlay === 's') {
+          cpuRps = 'Scissors';
+        }
+        //Game check 1 for tie
+        if(userPlay === computerPlay) {
+          ties++;
+          $ties.textContent = ties;
+          $computerPlay.textContent = cpuRps;
+          $userPlay.textContent = userRps;
+        // Game check 2 for loss
+        } else if((userPlay == 'r' && computerPlay == 'p') || (userPlay == 'p' && computerPlay == 's') || (userPlay == 's' && computerPlay == 'r')) {
+          losses++;
+          $losses.textContent = losses;
+          $computerPlay.textContent = cpuRps;
+          $userPlay.textContent = userRps;  
+        // Game check 3 for win
+        } else if((userPlay == 'r' && computerPlay == 's') || (userPlay == 's' && computerPlay == 'p') || (userPlay == 'p' && computerPlay == 'r')) {
+          wins++;
+          $wins.textContent = wins;
+          $computerPlay.textContent = cpuRps;
+          $userPlay.textContent = userRps;
+        }
+      }
+      //Warning
+      else {
+      alert('You need to press "r", "s" or "p"');
+      }
+      
+    }
+  </script>
+
+</body>
+
+</html>
