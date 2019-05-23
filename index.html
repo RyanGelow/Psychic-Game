@@ -9,83 +9,113 @@
 <body>
 
   <div id="game">
-      <h3>Guess what letter I'm thinking of...</h3>
-      <h4>Wins: <span id="wins">0</span></h4>
-      <h4>Losses: <span id="losses">0</span></h4>
-      <h4>Guesses Left: <span id="guessesLeft">TBD</span> </h4>
-      <h4>Your Guesses so far: <span id="guesses">TBD</span></h4>
-      <br>
-      <p><strong>RULES:</strong> Press any letter to make a guess</p>
+      <h3>Guess what letter I'm thinking of... <span id="note"></span></h3>
+      <h4>Wins: <span id="wins">0</span>  /|\/|\  Losses: <span id="losses">0</span></h4>
+      <h4>Guesses Left: <span id="guessesLeft">8</span> </h4>
+      <h4>Your Guesses so far: <span id="guesses">--</span></h4>
+      
+      <p><strong>RULES:</strong> Press any letter to make a guess. 8 chances to get it right. Press SPACE to start and reset game.</p>
   </div>
 
   <script type="text/javascript">
 
     // Array listing all of the options (every letter).
-    var play = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    const play = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    const playUp = String.prototype.toUpperCase.apply(play).split(",");
+
     var wins = 0;
     var losses = 0;
-    var ties = 0;
+    var guessesLeft = 8;
+    var yourGuesses = [];
     
-
+    // Link to webpage html
+    var $note = document.getElementById("note");
     var $wins = document.getElementById("wins");
     var $losses = document.getElementById("losses");
-    var $computerPlay = document.getElementById("computerPlay");
-    var $userPlay = document.getElementById("userPlay");
+    var $guessesLeft = document.getElementById("guessesLeft");
+    var $guesses = document.getElementById("guesses");
 
-    // Event acknowledgement
-    document.onkeyup = function(event) {
-      // console.log(event);
-      var userRps;
-      var cpuRps;
-      // Game qualifier to start game
-      if(event.key === "r" || event.key === "p" || event.key === "s") {
+    // Game start
+    document.onkeyup = function start(event) {
 
-        // User initiation
-        var userPlay = event.key;
-        if(userPlay === 'r') {
-          userRps = 'Rock';
-        } else if(userPlay === 'p') {
-          userRps = 'Paper';
-        } else if(userPlay === 's') {
-          userRps = 'Scissors';
+        //Space bar to initiate
+        if(event.key === " ") {
+            
+            //Computer picks letter
+            var computerPlay = play[Math.floor(Math.random() * play.length)];
+            console.log(computerPlay);
+       
+            //Announce computer has made decision, you have 8 chances to guess the letter. Dissappear when first letter is chosen.
+            $note.textContent = "...I have made my choice. Please begin.";
+
+            //User gets 8 chances to guess computer choice
+            //Selection Made
+            document.onkeyup = function game(event) {
+        
+                //Qualifier 
+                if(play.indexOf(event.key) > -1) {
+                            
+                    // Remove initial note
+                    $note.textContent = "";
+                    
+                    // Update remaining guesses by subtracting by 1 by total guesses
+                    guessesLeft--;
+                    $guessesLeft.textContent = guessesLeft;
+        
+                    
+                    // Selection made 
+                    yourGuesses.push(" " + event.key);
+                    $guesses.textContent = yourGuesses;
+                                    
+                    // Lose scenario
+                    if(guessesLeft === 0) {
+                        $note.textContent = "YOU LOSE";
+                        $guesses.textContent = '"' + computerPlay + '"' + " was the computer's choice.";
+                        losses += 1;
+                        $losses.textContent = losses;
+                        //Game reset on any click
+                        yourGuesses = [];
+                        guessesLeft = 8;
+                        computerPlay = play[Math.floor(Math.random() * play.length)];
+                        console.log(computerPlay);
+                                    
+                    // Win scenario
+                    } if(event.key === computerPlay) {
+                        $note.textContent = "YOU WIN";
+                        $guesses.textContent = '"' + computerPlay + '"' + " was the winning guess!";
+                        wins += 1;
+                        $wins.textContent = wins;
+                        //Game reset on any click
+                        yourGuesses = [];
+                        guessesLeft = 8;
+                        computerPlay = play[Math.floor(Math.random() * play.length)];
+                        console.log(computerPlay);
+                        return;
+                
+                    }
+                
+                //CAPS LOCK check
+                } else if(playUp.indexOf(event.key) > -1) {
+                        alert("Turn off CAPS LOCK.");
+                 
+                // Reset scenario
+                } else if(event.key === " ") {
+                    wins = 0;
+                    $wins.textContent = wins;
+                    losses = 0;
+                    $losses.textContent = losses;
+                    yourGuesses = [];
+                    $guesses.textContent = "--";
+                    guessesLeft = 8;
+                    $guessesLeft.textContent = guessesLeft;
+                    // computerPlay = play[Math.floor(Math.random() * play.length)];
+                    // console.log(computerPlay);
+                    start(event);
+                }
+            }   
         }
-        // Computer play begins, selecting element from array
-        // formula below is for random select of play array
-        var computerPlay = play[Math.floor(Math.random() * play.length)];
-        // console.log(computerPlay);
-        if(computerPlay === 'r') {
-          cpuRps = 'Rock';
-        } else if(computerPlay === 'p') {
-          cpuRps = 'Paper';
-        } else if(computerPlay === 's') {
-          cpuRps = 'Scissors';
-        }
-        //Game check 1 for tie
-        if(userPlay === computerPlay) {
-          ties++;
-          $ties.textContent = ties;
-          $computerPlay.textContent = cpuRps;
-          $userPlay.textContent = userRps;
-        // Game check 2 for loss
-        } else if((userPlay == 'r' && computerPlay == 'p') || (userPlay == 'p' && computerPlay == 's') || (userPlay == 's' && computerPlay == 'r')) {
-          losses++;
-          $losses.textContent = losses;
-          $computerPlay.textContent = cpuRps;
-          $userPlay.textContent = userRps;  
-        // Game check 3 for win
-        } else if((userPlay == 'r' && computerPlay == 's') || (userPlay == 's' && computerPlay == 'p') || (userPlay == 'p' && computerPlay == 'r')) {
-          wins++;
-          $wins.textContent = wins;
-          $computerPlay.textContent = cpuRps;
-          $userPlay.textContent = userRps;
-        }
-      }
-      //Warning
-      else {
-      alert('You need to press "r", "s" or "p"');
-      }
-      
-    }
+    }   
+    
   </script>
 
 </body>
