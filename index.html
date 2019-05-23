@@ -8,16 +8,17 @@
 
 <body>
 
-  <div id="game">
-      <h3>Guess what letter I'm thinking of... <span id="note"></span></h3>
-      <h4>Wins: <span id="wins">0</span>  /|\/|\  Losses: <span id="losses">0</span></h4>
-      <h4>Guesses Left: <span id="guessesLeft">8</span> </h4>
-      <h4>Your Guesses so far: <span id="guesses">--</span></h4>
+    <div id="game">
+        <h1>The Psychic Game</h1>
+        <h3>Guess what letter I'm thinking of... <span id="note"></span></h3>
+        <h4>Wins: <span id="wins">0</span>  /|\/|\  Losses: <span id="losses">0</span></h4>
+        <h4>Guesses Left: <span id="guessesLeft">8</span> </h4>
+        <h4>Your Guesses so far: <span id="guesses">--</span></h4>
       
-      <p><strong>RULES:</strong> Press any letter to make a guess. 8 chances to get it right. Press SPACE to start and reset game.</p>
-  </div>
+        <p><strong>RULES:</strong> Press any letter to make a guess. 8 chances to get it right. Press SPACE to start and reset game.</p>
+    </div>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
 
     // Array listing all of the options (every letter).
     const play = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
@@ -66,7 +67,9 @@
                     // Selection made 
                     yourGuesses.push(" " + event.key);
                     $guesses.textContent = yourGuesses;
-                                    
+                    
+                    // Look into how to not allow for same letter to be selected...
+
                     // Lose scenario
                     if(guessesLeft === 0) {
                         $note.textContent = "YOU LOSE";
@@ -96,7 +99,7 @@
                 
                 //CAPS LOCK check
                 } else if(playUp.indexOf(event.key) > -1) {
-                        alert("Turn off CAPS LOCK.");
+                        alert("Please turn off CAPS LOCK.");
                  
                 // Reset scenario
                 } else if(event.key === " ") {
