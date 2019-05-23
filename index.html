@@ -76,7 +76,6 @@
                         $guesses.textContent = '"' + computerPlay + '"' + " was the computer's choice.";
                         losses += 1;
                         $losses.textContent = losses;
-                        //Game reset on any click
                         yourGuesses = [];
                         guessesLeft = 8;
                         computerPlay = play[Math.floor(Math.random() * play.length)];
@@ -88,7 +87,6 @@
                         $guesses.textContent = '"' + computerPlay + '"' + " was the winning guess!";
                         wins += 1;
                         $wins.textContent = wins;
-                        //Game reset on any click
                         yourGuesses = [];
                         guessesLeft = 8;
                         computerPlay = play[Math.floor(Math.random() * play.length)];
@@ -111,8 +109,6 @@
                     $guesses.textContent = "--";
                     guessesLeft = 8;
                     $guessesLeft.textContent = guessesLeft;
-                    // computerPlay = play[Math.floor(Math.random() * play.length)];
-                    // console.log(computerPlay);
                     start(event);
                 }
             }   
